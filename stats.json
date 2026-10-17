@@ -1,11 +1,83 @@
 {
-  "updated": null,
+  "updated": "2026-10-17T16:45:21.842Z",
   "username": "nalvarez_varona01",
-  "followers": 4740,
+  "followers": 5288,
+  "posts": 106,
   "growth": null,
-  "history": [{"d": "2026-10-15", "v": 4740}],
-  "reach30": null,
-  "interactions30": null,
-  "engagement": {},
-  "demographics": {}
+  "history": [
+    {
+      "d": "2026-10-15",
+      "v": 4740
+    },
+    {
+      "d": "2026-10-17",
+      "v": 5288
+    }
+  ],
+  "reach30": 7569,
+  "interactions30": 5840,
+  "engaged30": 1122,
+  "engagement": {
+    "rate": 10.6,
+    "posts": 12,
+    "lastPost": {
+      "interactions": 4850,
+      "rate": 91.7,
+      "date": "2026-10-05T16:30:52+0000"
+    }
+  },
+  "demographics": {
+    "gender": {
+      "male": 75.9,
+      "female": 24.1
+    },
+    "age": [
+      [
+        "13-17",
+        0.9
+      ],
+      [
+        "18-24",
+        18.3
+      ],
+      [
+        "25-34",
+        42.3
+      ],
+      [
+        "35-44",
+        18.2
+      ],
+      [
+        "45-54",
+        13.6
+      ],
+      [
+        "55+",
+        6.7
+      ]
+    ],
+    "countries": [
+      [
+        "ES",
+        57.4
+      ],
+      [
+        "BR",
+        10.8
+      ],
+      [
+        "US",
+        7.5
+      ],
+      [
+        "IT",
+        3
+      ],
+      [
+        "AR",
+        2.3
+      ]
+    ]
+  }
 }
