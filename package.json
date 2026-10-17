@@ -1,0 +1,13 @@
+{
+  "name": "ficha-nicolas-alvarez-varona",
+  "private": true,
+  "type": "module",
+  "description": "Ficha de Nicolás Álvarez Varona con datos de Instagram actualizados cada día",
+  "scripts": {
+    "actualizar": "node scripts/update-instagram.mjs"
+  },
+  "dependencies": {
+    "libsodium-wrappers": "^0.7.15"
+  },
+  "engines": { "node": ">=20" }
+}
