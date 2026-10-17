@@ -1,0 +1,44 @@
+name: Actualizar datos de Instagram
+
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: actualizar-instagram
+  cancel-in-progress: false
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependencias
+        run: npm install --no-audit --no-fund
+
+      - name: Pedir datos a Instagram
+        run: node update-instagram.mjs
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+
+      - name: Guardar cambios
+        run: |
+          git config user.name "portento-bot"
+          git config user.email "portento-bot@users.noreply.github.com"
+          git add stats.json history.json
+          if git diff --cached --quiet; then
+            echo "Sin cambios."
+          else
+            git commit -m "Datos de Instagram $(date -u +%F)"
+            git push
+          fi
