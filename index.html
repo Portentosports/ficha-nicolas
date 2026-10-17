@@ -8,7 +8,7 @@
 <meta property="og:type" content="profile">
 <meta property="og:title" content="Nicolás Álvarez Varona">
 <meta property="og:description" content="Tenista profesional · Mejor ranking ATP 219 · Nº7 júnior mundial. Representado por Portento Sports Group.">
-<meta property="og:image" content="https://nicolas.portentosports.com/fotos/portada.jpg">
+<meta property="og:image" content="https://nicolas.portentosports.com/portada.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#2F6B2A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -213,7 +213,7 @@
         <h1>Nicolás<br>Álvarez<br>Varona</h1>
         <div class="sub">Tenista profesional · Burgos</div>
       </div>
-      <img class="ph" src="fotos/portada.jpg" alt="Nicolás Álvarez Varona en pista de tierra batida, raqueta en mano">
+      <img class="ph" src="portada.jpg" alt="Nicolás Álvarez Varona en pista de tierra batida, raqueta en mano">
     </section>
 
     <section class="pad bio">
@@ -222,7 +222,7 @@
       <p>En profesionales ha llegado al <strong>219 del ranking ATP</strong>. Debutó en el ATP de Barcelona en 2022 ante Kohlschreiber, ha sido finalista del Challenger de El Espinar en 2024 y 2025, suma dos títulos de dobles ATP Challenger y en 2026 ganó a Struff, ex número 21 del mundo, en el Challenger de Valencia.</p>
       <p>Cuenta con el apoyo de Wilson y Joma desde hace años, y medios como Marca, Superdeporte, Punto de Break o la RFET siguen su historia.</p>
       <p>Una lesión de cadera frenó su progresión. Ya ha pasado por quirófano y prepara su <strong>vuelta a la competición a principios de 2027</strong>, con ranking protegido y el apoyo de la RFET para conseguir invitaciones desde el primer torneo.</p>
-      <img class="bio-img" src="fotos/bio.jpg" alt="Nicolás sonriendo con la raqueta en pista">
+      <img class="bio-img" src="bio.jpg" alt="Nicolás sonriendo con la raqueta en pista">
 
       </section>
 
@@ -258,7 +258,7 @@
     <section class="pad" style="padding-top:8px">
       <div class="claims">
         <div>
-          <img class="media" src="fotos/cierre.jpg" alt="Nicolás posando con la raqueta">
+          <img class="media" src="cierre.jpg" alt="Nicolás posando con la raqueta">
           <em>La ventana<br>está abierta</em>
           <ol class="steps">
             <li><span class="when">Verano 26</span><span class="what">Cirugía de cadera</span></li>
@@ -271,9 +271,9 @@
           <em>Sé parte de<br>mi regreso</em>
           <p>La vuelta de Nicolás se cuenta desde dentro: recuperación, preparación y regreso a pista. Las marcas que entren ahora acompañan toda la historia, no solo el final.</p>
           <div class="phone"><div class="screen" id="screen">
-            <img class="on" src="fotos/movil-1.jpg" alt="Nicolás sentado en el banquillo con la raqueta">
-            <img src="fotos/movil-2.jpg" alt="Nicolás firmando una pelota">
-            <img src="fotos/movil-3.jpg" alt="Nicolás sonriendo con la raqueta">
+            <img class="on" src="movil-1.jpg" alt="Nicolás sentado en el banquillo con la raqueta">
+            <img src="movil-2.jpg" alt="Nicolás firmando una pelota">
+            <img src="movil-3.jpg" alt="Nicolás sonriendo con la raqueta">
           </div></div>
           <div class="car-nav">
             <button type="button" id="prev" aria-label="Foto anterior">‹</button>
@@ -410,7 +410,7 @@ function drawChart(history) {
 
 /* datos iniciales por si data/stats.json no carga */
 const FALLBACK = { followers: 4740, username: "nalvarez_varona01", history: [], engagement: {}, demographics: {} };
-fetch("data/stats.json", { cache: "no-store" })
+fetch("stats.json", { cache: "no-store" })
   .then(r => r.ok ? r.json() : FALLBACK)
   .catch(() => FALLBACK)
   .then(render);

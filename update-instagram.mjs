@@ -1,5 +1,6 @@
-// Actualiza site/data/stats.json con los datos de Instagram de Nicolás.
+// Actualiza stats.json con los datos de Instagram de Nicolás.
 // Lo ejecuta GitHub Actions cada día (ver .github/workflows/actualizar-instagram.yml).
+// Versión con todos los archivos en la raíz del repositorio.
 //
 // Variables de entorno:
 //   IG_TOKEN           token de larga duración de Instagram (API con inicio de sesión de Instagram)
@@ -11,8 +12,8 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const DATA_DIR = join(ROOT, "site", "data");
+const ROOT = dirname(fileURLToPath(import.meta.url));
+const DATA_DIR = ROOT;
 const STATS = join(DATA_DIR, "stats.json");
 const HISTORY = join(DATA_DIR, "history.json");
 
@@ -217,6 +218,6 @@ const stats = {
 await mkdir(DATA_DIR, { recursive: true });
 await writeFile(HISTORY, JSON.stringify(history, null, 1) + "\n");
 await writeFile(STATS, JSON.stringify(stats, null, 2) + "\n");
-console.log("✓ site/data/stats.json actualizado.");
+console.log("✓ stats.json actualizado.");
 
 await safe("renovar token", refreshToken, null);
