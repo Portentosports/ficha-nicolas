@@ -11,6 +11,7 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = ROOT;
@@ -173,7 +174,7 @@ async function saveSecret(name, value) {
   const keyRes = await gh("actions/secrets/public-key");
   if (!keyRes.ok) throw new Error(`no se pudo leer la clave del repo (HTTP ${keyRes.status})`);
   const { key, key_id } = await keyRes.json();
-  const sodium = (await import("libsodium-wrappers")).default;
+  const sodium = createRequire(import.meta.url)("libsodium-wrappers");
   await sodium.ready;
   const sealed = sodium.crypto_box_seal(sodium.from_string(value), sodium.from_base64(key, sodium.base64_variants.ORIGINAL));
   const put = await gh(`actions/secrets/${name}`, {
