@@ -6,9 +6,10 @@
 <title>Nicolás Álvarez Varona · Portento Sports Group</title>
 <meta name="description" content="Ficha de Nicolás Álvarez Varona, tenista profesional (mejor ranking ATP 219). Trayectoria, audiencia y datos de Instagram actualizados.">
 <meta property="og:type" content="profile">
+<meta property="og:url" content="https://portentosports.github.io/ficha-nicolas/">
 <meta property="og:title" content="Nicolás Álvarez Varona">
 <meta property="og:description" content="Tenista profesional · Mejor ranking ATP 219 · Nº7 júnior mundial. Representado por Portento Sports Group.">
-<meta property="og:image" content="https://nicolas.portentosports.com/portada.jpg">
+<meta property="og:image" content="https://portentosports.github.io/ficha-nicolas/portada.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#2F6B2A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -367,44 +368,65 @@ function render(D) {
   }
 }
 
-/* Gráfico de evolución: un punto por mes con el último dato guardado de cada mes. */
+/* Gráfico de evolución, como el de Ferrero: últimos 12 meses en el eje,
+   cifras a la derecha y cada dato colocado en su fecha real. */
 function drawChart(history) {
   const el = $("chart");
-  const W = 620, H = 270, L = 10, R = 64, T = 14, B = 34;
-  const byMonth = new Map();
-  history.forEach(p => byMonth.set(p.d.slice(0, 7), p));
-  let pts = [...byMonth.values()].slice(-12);
-  if (history.length >= 2 && pts.length < 4) {
-    // menos de 4 meses: se ven los días guardados (como mucho 30 puntos)
-    const step = Math.max(1, Math.ceil(history.length / 30));
-    pts = history.filter((_, i) => i % step === 0 || i === history.length - 1);
-  }
-  if (pts.length < 2) {
-    const rows = [0, 1, 2, 3, 4, 5].map(i => { const y = T + i * (H - T - B) / 5; return `<line x1="${L}" x2="${W - R}" y1="${y}" y2="${y}" stroke="#ECEDEA" stroke-dasharray="4 5"/>`; }).join("");
-    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Evolución de seguidores">${rows}
-      <text x="${(W - R + L) / 2}" y="${H / 2 - 4}" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="14" font-weight="600" fill="#8E949B">Evolución de seguidores</text>
-      <text x="${(W - R + L) / 2}" y="${H / 2 + 18}" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="12" fill="#A9AEB3">Se completa a medida que se registran datos</text></svg>`;
-    return;
-  }
-  const monthly = byMonth.size >= 4;
-  const vs = pts.map(p => p.v), lo = Math.min(...vs), hi = Math.max(...vs);
-  const span = Math.max(hi - lo, Math.max(10, hi * 0.02));
-  const raw = span / 5, mag = 10 ** Math.floor(Math.log10(raw));
+  const W = 620, H = 270, L = 16, R = 66, T = 14, B = 36;
+  const MES = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+  const day = s => Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10));
+  const pts = history.filter(p => p && p.d && p.v != null).map(p => ({ t: day(p.d), v: p.v, d: p.d }));
+  const endT = pts.length ? pts[pts.length - 1].t : Date.now();
+  const end = new Date(endT);
+  // ventana de 12 meses que termina en el mes del último dato
+  const startT = Date.UTC(end.getUTCFullYear(), end.getUTCMonth() - 11, 1);
+  const stopT = Date.UTC(end.getUTCFullYear(), end.getUTCMonth() + 1, 1);
+  const x = t => L + (t - startT) / (stopT - startT) * (W - R - L);
+  const inWin = pts.filter(p => p.t >= startT);
+
+  // eje Y
+  let lo, hi;
+  if (inWin.length) { lo = Math.min(...inWin.map(p => p.v)); hi = Math.max(...inWin.map(p => p.v)); }
+  else { lo = 0; hi = 100; }
+  const span = Math.max(hi - lo, Math.max(20, hi * 0.03));
+  const raw = span / 4, mag = 10 ** Math.floor(Math.log10(raw));
   const step = [1, 2, 2.5, 5, 10].map(k => k * mag).find(s => s >= raw);
-  const y0 = Math.floor((lo - span * 0.1) / step) * step, y1 = Math.ceil((hi + span * 0.1) / step) * step;
-  const x = i => L + i * (W - R - L) / (pts.length - 1), y = v => T + (1 - (v - y0) / (y1 - y0)) * (H - T - B);
+  const y0 = Math.floor((lo - span * 0.15) / step) * step, y1 = Math.ceil((hi + span * 0.15) / step) * step;
+  const y = v => T + (1 - (v - y0) / (y1 - y0)) * (H - T - B);
   const ticks = []; for (let t = y0; t <= y1 + 1e-9; t += step) ticks.push(t);
-  let d = `M${x(0)},${y(vs[0])}`;
-  for (let i = 1; i < pts.length; i++) { const cx = (x(i - 1) + x(i)) / 2; d += ` C${cx},${y(vs[i - 1])} ${cx},${y(vs[i])} ${x(i)},${y(vs[i])}`; }
-  const lab = p => { const [yy, mm, dd] = p.d.split("-"); return monthly ? MESES[+mm - 1] : `${+dd} ${MESES[+mm - 1]}`; };
-  const every = Math.ceil(pts.length / 12);
-  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Evolución de seguidores de ${fmt(vs[0])} a ${fmt(vs[vs.length - 1])}">
-    <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3F7A2B" stop-opacity=".16"/><stop offset="1" stop-color="#3F7A2B" stop-opacity="0"/></linearGradient></defs>
-    ${ticks.map(t => `<line x1="${L}" x2="${W - R}" y1="${y(t)}" y2="${y(t)}" stroke="#ECEDEA" stroke-dasharray="4 5"/><text x="${W - R + 10}" y="${y(t) + 4}" font-family="Inter,Arial,sans-serif" font-size="12" fill="#A9AEB3">${fmt(t)}</text>`).join("")}
-    <path d="${d} L${x(pts.length - 1)},${H - B} L${x(0)},${H - B}Z" fill="url(#g)"/>
-    <path class="line" d="${d}" fill="none" stroke="#3F7A2B" stroke-width="3" stroke-linecap="round"/>
-    <circle cx="${x(pts.length - 1)}" cy="${y(vs[vs.length - 1])}" r="4.5" fill="#3F7A2B"/>
-    ${pts.map((p, i) => (i % every === 0 || i === pts.length - 1) ? `<text x="${x(i)}" y="${H - 10}" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="12" fill="#A9AEB3">${lab(p)}</text>` : "").join("")}
+  const tick = v => v >= 10000 ? (Math.round(v / 100) / 10).toString().replace(".", ",") + "K" : fmt(v);
+
+  // meses del eje X (centrados en cada mes, como Ferrero)
+  const months = [];
+  for (let k = 0; k < 12; k++) {
+    const m0 = Date.UTC(end.getUTCFullYear(), end.getUTCMonth() - 11 + k, 1);
+    const m1 = Date.UTC(end.getUTCFullYear(), end.getUTCMonth() - 10 + k, 1);
+    months.push({ x: x((m0 + m1) / 2), l: MES[new Date(m0).getUTCMonth()] });
+  }
+
+  let line = "", area = "", dot = "", note = "";
+  if (inWin.length >= 2) {
+    const P = inWin.map(p => [x(p.t), y(p.v)]);
+    let d = `M${P[0][0]},${P[0][1]}`;
+    for (let i = 1; i < P.length; i++) { const cx = (P[i - 1][0] + P[i][0]) / 2; d += ` C${cx},${P[i - 1][1]} ${cx},${P[i][1]} ${P[i][0]},${P[i][1]}`; }
+    line = `<path d="${d}" fill="none" stroke="#3F7A2B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+    area = `<path d="${d} L${P[P.length - 1][0]},${H - B} L${P[0][0]},${H - B}Z" fill="url(#g)"/>`;
+  }
+  if (inWin.length) {
+    const last = inWin[inWin.length - 1];
+    const spanDays = (last.t - inWin[0].t) / 864e5;
+    if (spanDays < 60) dot = `<circle cx="${x(last.t)}" cy="${y(last.v)}" r="4" fill="#3F7A2B"/>`;
+    if (spanDays < 90) {
+      const f = new Date(inWin[0].t);
+      note = `<text x="${L}" y="${T + 12}" font-family="Inter,Arial,sans-serif" font-size="12" fill="#A9AEB3">Registro diario desde el ${f.getUTCDate()} ${MES[f.getUTCMonth()].toLowerCase()} ${f.getUTCFullYear()}</text>`;
+    }
+  }
+
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Evolución de seguidores en los últimos 12 meses">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3F7A2B" stop-opacity=".18"/><stop offset="1" stop-color="#3F7A2B" stop-opacity="0"/></linearGradient></defs>
+    ${ticks.map(t => `<line x1="${L}" x2="${W - R}" y1="${y(t)}" y2="${y(t)}" stroke="#ECEDEA" stroke-dasharray="4 5"/><text x="${W - R + 12}" y="${y(t) + 4}" font-family="Inter,Arial,sans-serif" font-size="12" fill="#B4B8BC">${tick(t)}</text>`).join("")}
+    ${area}${line}${dot}${note}
+    ${months.map(m => `<text x="${m.x}" y="${H - 10}" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="12" fill="#B4B8BC">${m.l}</text>`).join("")}
   </svg>`;
 }
 
