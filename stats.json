@@ -1,7 +1,7 @@
 {
-  "updated": "2026-10-20T05:43:04.743Z",
+  "updated": "2026-10-21T05:43:19.254Z",
   "username": "nalvarez_varona01",
-  "followers": 5362,
+  "followers": 5394,
   "posts": 106,
   "growth": null,
   "history": [
@@ -20,17 +20,21 @@
     {
       "d": "2026-10-20",
       "v": 5362
+    },
+    {
+      "d": "2026-10-21",
+      "v": 5394
     }
   ],
-  "reach30": 7846,
-  "interactions30": 6938,
-  "engaged30": 1187,
+  "reach30": 7903,
+  "interactions30": 7436,
+  "engaged30": 1221,
   "engagement": {
-    "rate": 12.1,
+    "rate": 12.8,
     "posts": 12,
     "lastPost": {
-      "interactions": 5897,
-      "rate": 110,
+      "interactions": 6398,
+      "rate": 118.6,
       "date": "2026-10-05T16:30:52+0000"
     }
   },
