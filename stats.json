@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-08T05:56:51.235Z",
+  "updated": "2026-11-09T06:17:43.551Z",
   "username": "nalvarez_varona01",
   "followers": 5490,
   "posts": 106,
@@ -96,16 +96,20 @@
     {
       "d": "2026-11-08",
       "v": 5490
+    },
+    {
+      "d": "2026-11-09",
+      "v": 5490
     }
   ],
-  "reach30": 3126,
-  "interactions30": 7967,
-  "engaged30": 656,
+  "reach30": 3001,
+  "interactions30": 7686,
+  "engaged30": 625,
   "engagement": {
     "rate": 17.6,
     "posts": 12,
     "lastPost": {
-      "interactions": 9731,
+      "interactions": 9730,
       "rate": 177.2,
       "date": "2026-10-05T16:30:52+0000"
     }
